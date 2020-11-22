@@ -1,0 +1,233 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<schemadesigner version="6.5">
+<source>
+<database charset="utf8" collation="utf8_general_ci">controllicencias</database>
+</source>
+<canvas zoom="80">
+<tables>
+<table name="persona" view="colnames">
+<left>747</left>
+<top>828</top>
+<width>86</width>
+<height>198</height>
+<sql_create_table>CREATE TABLE `persona` (
+  `id` int(10) NOT NULL AUTO_INCREMENT,
+  `dni` int(10) NOT NULL,
+  `apellido` tinytext,
+  `nombre` tinytext,
+  `sexo` char(1) DEFAULT NULL,
+  `cuil` tinytext,
+  `nacimiento` date DEFAULT NULL,
+  `telefono` tinytext,
+  `domicilio` text,
+  `localidad` tinytext,
+  PRIMARY KEY (`id`),
+  KEY `id` (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=270 DEFAULT CHARSET=utf8</sql_create_table>
+</table>
+<table name="empleado" view="colnames">
+<left>571</left>
+<top>963</top>
+<width>94</width>
+<height>144</height>
+<sql_create_table>CREATE TABLE `empleado` (
+  `legajo` int(8) NOT NULL AUTO_INCREMENT,
+  `ingreso` date DEFAULT NULL,
+  `idpersona` int(10) DEFAULT NULL,
+  `idseccion` int(3) DEFAULT NULL,
+  `iddelegacion` int(3) DEFAULT NULL,
+  `baja` tinyint(1) DEFAULT '0',
+  PRIMARY KEY (`legajo`),
+  KEY `empleado_ibseccion` (`idseccion`),
+  KEY `empleado_ibdelegacion` (`iddelegacion`),
+  KEY `empleado_ibpersona` (`idpersona`),
+  CONSTRAINT `empleado_ibdelegacion` FOREIGN KEY (`iddelegacion`) REFERENCES `delegacion` (`id`),
+  CONSTRAINT `empleado_ibpersona` FOREIGN KEY (`idpersona`) REFERENCES `persona` (`id`),
+  CONSTRAINT `empleado_ibseccion` FOREIGN KEY (`idseccion`) REFERENCES `seccion` (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=396 DEFAULT CHARSET=utf8</sql_create_table>
+</table>
+<table name="pedidovacaciones" view="colnames">
+<left>418</left>
+<top>728</top>
+<width>129</width>
+<height>185</height>
+<sql_create_table>CREATE TABLE `pedidovacaciones` (
+  `id` int(10) NOT NULL AUTO_INCREMENT,
+  `fecha` date DEFAULT NULL,
+  `desde` date DEFAULT NULL,
+  `hasta` date DEFAULT NULL,
+  `dias` tinyint(2) DEFAULT NULL,
+  `idlicenciavacaciones` int(10) DEFAULT NULL,
+  `pendientes` tinyint(3) DEFAULT NULL,
+  `idempleado` int(10) DEFAULT NULL,
+  `autorizado` tinyint(1) DEFAULT '0',
+  PRIMARY KEY (`id`),
+  KEY `pedidovacaciones_ibempleado` (`idempleado`),
+  KEY `pedidovacaciones_iblicenciavacaciones` (`idlicenciavacaciones`),
+  CONSTRAINT `pedidovacaciones_ibempleado` FOREIGN KEY (`idempleado`) REFERENCES `empleado` (`legajo`),
+  CONSTRAINT `pedidovacaciones_iblicenciavacaciones` FOREIGN KEY (`idlicenciavacaciones`) REFERENCES `licenciavacaciones` (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=402 DEFAULT CHARSET=utf8</sql_create_table>
+</table>
+<table name="liquidacion" view="colnames">
+<left>17</left>
+<top>970</top>
+<width>126</width>
+<height>144</height>
+<sql_create_table>CREATE TABLE `liquidacion` (
+  `id` int(10) NOT NULL AUTO_INCREMENT,
+  `mes` int(2) DEFAULT NULL,
+  `dias` int(3) DEFAULT NULL,
+  `liquidado` tinyint(1) DEFAULT '0',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=76 DEFAULT CHARSET=utf8</sql_create_table>
+</table>
+<table name="usuario" view="colnames">
+<left>538</left>
+<top>595</top>
+<width>72</width>
+<height>117</height>
+<sql_create_table>CREATE TABLE `usuario` (
+  `id` int(10) NOT NULL AUTO_INCREMENT,
+  `nombre` tinytext NOT NULL,
+  `clave` text NOT NULL,
+  `baja` tinyint(1) DEFAULT '0',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=19 DEFAULT CHARSET=utf8</sql_create_table>
+</table>
+<table name="permiso" view="colnames">
+<left>738</left>
+<top>603</top>
+<width>88</width>
+<height>90</height>
+<sql_create_table>CREATE TABLE `permiso` (
+  `id` int(10) NOT NULL AUTO_INCREMENT,
+  `descripcion` tinytext NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=34 DEFAULT CHARSET=utf8</sql_create_table>
+</table>
+<table name="usuariopermiso" view="colnames">
+<left>634</left>
+<top>701</top>
+<width>82</width>
+<height>103</height>
+<sql_create_table>CREATE TABLE `usuariopermiso` (
+  `id` int(10) NOT NULL AUTO_INCREMENT,
+  `idusuario` int(10) DEFAULT NULL,
+  `idpermiso` int(10) DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `usuariopermiso_ibusuario` (`idusuario`),
+  KEY `usuariopermiso_ibpermiso` (`idpermiso`),
+  CONSTRAINT `usuariopermiso_ibpermiso` FOREIGN KEY (`idpermiso`) REFERENCES `permiso` (`id`),
+  CONSTRAINT `usuariopermiso_ibusuario` FOREIGN KEY (`idusuario`) REFERENCES `usuario` (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=83 DEFAULT CHARSET=utf8</sql_create_table>
+</table>
+<table name="seccion" view="colnames">
+<left>759</left>
+<top>1038</top>
+<width>72</width>
+<height>90</height>
+<sql_create_table>CREATE TABLE `seccion` (
+  `id` int(3) NOT NULL AUTO_INCREMENT,
+  `nombre` tinytext,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=15 DEFAULT CHARSET=utf8</sql_create_table>
+</table>
+<table name="delegacion" view="colnames">
+<left>762</left>
+<top>1135</top>
+<width>72</width>
+<height>90</height>
+<sql_create_table>CREATE TABLE `delegacion` (
+  `id` int(3) NOT NULL AUTO_INCREMENT,
+  `nombre` tinytext,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8</sql_create_table>
+</table>
+<table name="licenciavacaciones" view="colnames">
+<left>198</left>
+<top>979</top>
+<width>90</width>
+<height>144</height>
+<sql_create_table>CREATE TABLE `licenciavacaciones` (
+  `id` int(10) NOT NULL AUTO_INCREMENT,
+  `anio` tinytext,
+  `dias` int(2) DEFAULT NULL,
+  `pendientes` tinyint(2) DEFAULT NULL,
+  `idempleado` int(10) DEFAULT NULL,
+  `antiguedad` tinytext,
+  PRIMARY KEY (`id`),
+  KEY `licenciavacaciones_ibempleado` (`idempleado`),
+  CONSTRAINT `licenciavacaciones_ibempleado` FOREIGN KEY (`idempleado`) REFERENCES `empleado` (`legajo`)
+) ENGINE=InnoDB AUTO_INCREMENT=535 DEFAULT CHARSET=utf8</sql_create_table>
+</table>
+<table name="diasctalicencia" view="colnames">
+<left>417</left>
+<top>1102</top>
+<width>129</width>
+<height>171</height>
+<sql_create_table>CREATE TABLE `diasctalicencia` (
+  `id` int(10) NOT NULL AUTO_INCREMENT,
+  `fecha` date DEFAULT NULL,
+  `desde` date DEFAULT NULL,
+  `hasta` date DEFAULT NULL,
+  `dias` int(2) DEFAULT NULL,
+  `idempleado` int(10) DEFAULT NULL,
+  `idlicenciavacaciones` int(10) DEFAULT NULL,
+  `pendientes` int(2) DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `idempleado` (`idempleado`),
+  KEY `idlicenciavacaciones` (`idlicenciavacaciones`),
+  CONSTRAINT `diasctalicencia_ibfk_1` FOREIGN KEY (`idempleado`) REFERENCES `empleado` (`legajo`),
+  CONSTRAINT `diasctalicencia_ibfk_2` FOREIGN KEY (`idlicenciavacaciones`) REFERENCES `licenciavacaciones` (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8</sql_create_table>
+</table>
+<table name="auditoria" view="colnames">
+<left>192</left>
+<top>625</top>
+<width>80</width>
+<height>144</height>
+<sql_create_table>CREATE TABLE `auditoria` (
+  `id` int(10) NOT NULL AUTO_INCREMENT,
+  `usuario` tinytext,
+  `accion` tinytext,
+  `fecha` datetime DEFAULT NULL,
+  `tabla` tinytext,
+  `idregistro` int(10) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=907 DEFAULT CHARSET=utf8</sql_create_table>
+</table>
+<table name="liquidacionpedidovacaciones" view="colnames">
+<left>200</left>
+<top>785</top>
+<width>126</width>
+<height>103</height>
+<sql_create_table>CREATE TABLE `liquidacionpedidovacaciones` (
+  `id` int(10) NOT NULL AUTO_INCREMENT,
+  `idliquidacion` int(10) NOT NULL,
+  `idpedidovacaciones` int(10) NOT NULL,
+  PRIMARY KEY (`id`),
+  KEY `liquidacionpedidovacaciones_idliquidacion` (`idliquidacion`),
+  KEY `liquidacionpedidovacaciones_idpedidovacaciones` (`idpedidovacaciones`),
+  CONSTRAINT `liquidacionpedidovacaciones_idliquidacion` FOREIGN KEY (`idliquidacion`) REFERENCES `liquidacion` (`id`),
+  CONSTRAINT `liquidacionpedidovacaciones_idpedidovacaciones` FOREIGN KEY (`idpedidovacaciones`) REFERENCES `pedidovacaciones` (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=54 DEFAULT CHARSET=utf8</sql_create_table>
+</table>
+<table name="liquidaciondiasctalicencia" view="colnames">
+<left>196</left>
+<top>1164</top>
+<width>110</width>
+<height>103</height>
+<sql_create_table>CREATE TABLE `liquidaciondiasctalicencia` (
+  `id` int(10) NOT NULL AUTO_INCREMENT,
+  `idliquidacion` int(10) NOT NULL,
+  `iddiasctalicencia` int(10) NOT NULL,
+  PRIMARY KEY (`id`),
+  KEY `liquidaciondiasctalicencia_idliquidacion` (`idliquidacion`),
+  KEY `liquidaciondiasctalicencia_iddiasctalicencia` (`iddiasctalicencia`),
+  CONSTRAINT `liquidaciondiasctalicencia_iddiasctalicencia` FOREIGN KEY (`iddiasctalicencia`) REFERENCES `diasctalicencia` (`id`),
+  CONSTRAINT `liquidaciondiasctalicencia_idliquidacion` FOREIGN KEY (`idliquidacion`) REFERENCES `liquidacion` (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8</sql_create_table>
+</table>
+</tables>
+</canvas>
+</schemadesigner>

@@ -1,0 +1,310 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>CEC - USUARIOS</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="shortcut icon" href="../img/icono_cec.ico">
+        <link href="../js/bootstrap/css/bootstrap.min.css" rel="stylesheet" type="text/css"/>
+        <link href="../js/bootstrap/css/bootstrap-theme.min.css" rel="stylesheet" type="text/css"/>   
+        <link href="../js/bootstrap/css/bootstrapValidator.min.css" rel="stylesheet" type="text/css"/>
+        <link href="../js/DataTables/datatables.min.css" rel="stylesheet" type="text/css"/>
+        <link href="../js/DataTables/datatables-select.min.css" rel="stylesheet" type="text/css"/>
+        <link href="../js/DataTables/responsive.dataTables.min.css" rel="stylesheet" type="text/css"/>
+    </head>
+    <body>
+        <!-- Barra de Navegacion  -->
+        <nav class="navbar navbar-default" role="navigation">
+            <div class="container-fluid">
+                <div class="navbar-header">
+                    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+                        <span class="sr-only">Toggle navigation</span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button>
+                    
+                    <a class="navbar-brand" href="usuarios.html">
+                        <img src="../img/logo_cec_secundario.png" width="30" height="30" class="d-inline-block align-top">
+                    </a>
+                </div>
+                <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                    <ul class="nav navbar-nav">
+                        <li class="nav-item active"><a href="usuarios.html"><b>USUARIOS</b></a></li>
+                    </ul>
+                    <!-- Cerrar Sesion -->
+                    <div class="container">
+                        <div id="navbar" class="navbar-collapse collapse">                            
+                            <form class="navbar-form navbar-right" action="../controlador/ruteador/CerrarSesion.php" method="POST">
+                                <button type="submit" class="btn btn-primary">Cerrar Sesion</button>
+                            </form>
+                        </div>
+                    </div>                   
+                </div>
+            </div>
+        </nav>
+        
+        <!-- Cuerpo -->
+        <div class="table-responsive no-wrap container">
+            <div class="row">
+                <div class="col-lg-1"></div>
+                <div class="col-lg-10">
+                    <!-- Titulo -->      
+                    <div class="page-header">
+                        <h1>Usuarios</h1>
+                    </div>
+                    <!-- Tabla -->
+                    <table class="table" id="tablaUsuario" width="100%">
+                        <thead>
+                            <tr>
+                                <th data-priority="1">Usuario</th>
+                                <th data-priority="2">Clave</th>
+                                <th style="display:none">idusuario</th>
+                            </tr>
+                        </thead>
+                        <tbody id="cuerpoTabla">
+                        </tbody>
+                    </table><br>
+                    <!-- Botones -->                    
+                    <table class="table">
+                        <tr>
+                            <td align="center">
+                                <button class="btn btn-primary btn-lg" id="agregarUsuario" disabled>Agregar</button>
+                            </td>
+                            
+                            <td align="center">
+                                <button class="btn btn-primary btn-lg" id="modificarUsuario" disabled>Modificar</button>
+                            </td>
+                            
+                        </tr>
+                    </table>
+                </div>
+                <div class="col-lg-1"></div>
+            </div>
+        </div>
+
+        <!-- Modal Agregar Usuario -->
+        <div class="modal fade" id="modalUsuario" tabindex="-1" role="dialog" aria-labelledby="tituloModalUsuario" aria-hidden="true">
+          <div class="modal-dialog" role="document">
+            <div class="modal-content">
+              <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                  <span aria-hidden="true">&times;</span>
+                </button>
+                <h3 class="modal-title" id="tituloModalUsuario"></h3>
+              </div>
+              <div class="modal-body">
+                <form id="formUsuario" class="form-horizontal">
+
+                    <!-- Accion Formulario -->
+                    <div class="form-group">
+                        <input class="form-control" type="hidden" id="accionFormUsuario">
+                    </div>
+
+                    <!-- Nombre Usuario -->
+                    <div class="form-group">
+                       <label class='col-lg-2'>Nombre usuario</label>
+                       <div class='col-lg-10'>
+                           <input class="form-control" type="text" id="nombre" name="nombre"/>
+                       </div>
+                    </div>
+
+                    <!-- Clave -->
+                    <div class="form-group">
+                       <label class='col-lg-2'>Contraseña</label>
+                       <div class='col-lg-10'>
+                           <input class="form-control" type="password" id="clave" name="clave"/>
+                       </div>
+                    </div>
+
+                    <!-- Confirmar clave -->
+                    <div class="form-group">
+                       <label class='col-lg-2'>Confirmar contraseña</label>
+                       <div class='col-lg-10'>
+                           <input class="form-control" type="password" id="confirmarClave" name="confirmarClave" />
+                       </div>
+                    </div>
+
+                    <!-- Permisos Usuario -->
+                    <div class="form-group">
+                       <label class='col-lg-10'>Permisos para el usuario</label>
+                       <div class='col-lg-2'></div>
+                    </div>
+
+                    <div id="permisosUsuario" class="form-group">
+                        <div class='col-lg-1'>
+                        </div>
+                        <div class='col-lg-10'>
+                            <input type='checkbox' class="custom-control-input" id="rrhh" value="rrhh" name="permiso[]"  />
+                            <a href="#accionesrrhh" data-toggle='collapse' data-target='#accionesrrhh'>RRHH</a>
+
+                            <div id='accionesrrhh' class='collapse' disabled>
+                              <!-- Seccion legajos -->
+                              <div class="form-group">
+                                <div class='col-lg-1'></div>
+                                <div class='col-lg-11'>
+                                   <input type='checkbox' id="linkLegajos" name="accionesrrhh" value="linkLegajos" disabled/>
+                                    Legajos 
+                                </div>
+                              </div>
+                                <div id="accioneslinkLegajos" class="form-group" >
+                                    <div class='col-lg-2'></div>
+                                        <div class='col-lg-10'>
+                                            <input type="checkbox" id="agregarEmpleado" value="agregarEmpleado" name="accioneslinkLegajos" disabled/>
+                                            Agregar
+                                            <input type="checkbox" id="modificarEmpleado" value="modificarEmpleado" name="accioneslinkLegajos" disabled/>
+                                            Modificar
+                                            <input type="checkbox" id="eliminarEmpleado" value="eliminarEmpleado" name="accioneslinkLegajos" disabled/>
+                                            Eliminar
+                                            <input type="checkbox" id="AuditoriaEmpleados" value="AuditoriaEmpleados" name="accioneslinkLegajos" disabled/>
+                                            Auditoria       
+                                        </div>
+                                </div>
+                              <!-- Seccion vacaciones -->  
+                              <div class="form-group">
+                                <div class='col-lg-1'></div>
+                                <div class='col-lg-11'>
+                                   <input type='checkbox' id="linkVacaciones" name="accionesrrhh" value="linkVacaciones" disabled/>
+                                    Vacaciones 
+                                </div>
+                              </div>
+                                <div id='accioneslinkVacaciones'><!-- Acciones vacaciones -->
+                                    <div class="form-group">
+                                      <div class='col-lg-2'></div>
+                                      <div class='col-lg-10'>
+                                        <input type='checkbox' id="linkPedidoVacaciones" name="accioneslinkVacaciones" value="linkPedidoVacaciones" disabled/>
+                                        Pedido vacaciones   
+                                      </div>
+                                    </div>
+                                    
+                                    <div id='accioneslinkPedidoVacaciones' class="form-group">
+                                        <div class='col-lg-3'></div>
+                                        <div class='col-lg-9'>
+                                            <input type="checkbox" id="agregarPedidoVacaciones" value="agregarPedidoVacaciones" name="accioneslinkPedidoVacaciones" disabled/>
+                                            Agregar
+                                            <input type="checkbox" id="generarPedidoVacaciones" value="generarPedidoVacaciones" name="accioneslinkPedidoVacaciones" disabled/>
+                                            Generar
+                                            <input type="checkbox" id="modificarPedidoVacaciones" value="modificarPedidoVacaciones" name="accioneslinkPedidoVacaciones" disabled/>
+                                            Modificar
+                                            <input type="checkbox" id="eliminarPedidoVacaciones" value="eliminarPedidoVacaciones" name="accioneslinkPedidoVacaciones" disabled/>
+                                            Eliminar <br>
+                                            <input type="checkbox" id="autorizarPedidoVacaciones" value="autorizarPedidoVacaciones" name="accioneslinkPedidoVacaciones" disabled/>
+                                            Autorizar
+                                            <input type="checkbox" id="AuditoriaPedidoVacaciones" value="AuditoriaPedidoVacaciones" name="accioneslinkPedidoVacaciones" disabled/>
+                                            Auditoria   
+                                        </div>
+                                        
+                                    </div>  
+                                    
+                                    <div class="form-group">
+                                        <div class='col-lg-2'></div>
+                                        <div class='col-lg-10'>
+                                            <input type='checkbox' id="linkDiasCtaLicencia" name="accioneslinkVacaciones" value="linkDiasCtaLicencia" disabled/>
+                                            D&iacute;as a cuenta de licencia
+                                        </div>
+                                    </div>    
+                                        <div id="accioneslinkDiasCtaLicencia" class="form-group">
+                                            <div class='col-lg-3'></div>
+                                            <div class='col-lg-9'>
+                                                <input type="checkbox" id="agregarDiasCtaLicencia" value="agregarDiasCtaLicencia" name="accioneslinkDiasCtaLicencia" disabled/>
+                                                Agregar
+                                                <input type="checkbox" id="modificarDiasCtaLicencia" value="modificarDiasCtaLicencia" name="accioneslinkDiasCtaLicencia" disabled/>
+                                                Modificar
+                                                <input type="checkbox" id="eliminarDiasCtaLicencia"  value="eliminarDiasCtaLicencia" name="accioneslinkDiasCtaLicencia" disabled/>
+                                                Eliminar
+                                                <input type="checkbox" id="autorizarDiasCtaLicencia" value="autorizarDiasCtaLicencia" name="accioneslinkDiasCtaLicencia" disabled/>
+                                                Autorizar
+                                                <br>
+                                                <input type="checkbox" id="AuditoriaDiasCtaLicencia" value="AuditoriaDiasCtaLicencia" name="accioneslinkDiasCtaLicencia" disabled/>
+                                                Auditoria
+                                            </div>
+                                        </div>
+                                    <div class="form-group">
+                                        <div class='col-lg-2'></div>
+                                        <div class='col-lg-10'>
+                                            <input type='checkbox' id="linkLicenciaVacaciones" name="accioneslinkVacaciones" value="linkLicenciaVacaciones" disabled/>
+                                            Licencia vacaciones    
+                                        </div>
+                                    </div> 
+                                        <div id="accioneslinkLicenciaVacaciones" class="form-group">
+                                            <div class='col-lg-3'></div>
+                                            <div class='col-lg-9'>
+                                                <input type="checkbox" id="agregarLicenciaVacaciones" value="agregarLicenciaVacaciones" name="accioneslinkLicenciaVacaciones" disabled/>
+                                                Agregar
+                                                <input type="checkbox" id="generarLicenciasVacaciones" value="generarLicenciasVacaciones" name="accioneslinkLicenciaVacaciones" disabled/>
+                                                Generar
+                                                <input type="checkbox" id="modificarLicenciaVacaciones" value="modificarLicenciaVacaciones" name="accioneslinkLicenciaVacaciones" disabled/>
+                                                Modificar
+                                                <input type="checkbox" id="AuditoriaLicenciaVacaciones" value="AuditoriaLicenciaVacaciones" name="accioneslinkLicenciaVacaciones" disabled/>
+                                                Auditoria
+                                            </div>
+                                        </div>
+                                    <div class="form-group">
+                                        <div class='col-lg-2'></div>
+                                        <div class='col-lg-10'>
+                                            <input type='checkbox' id="linkLiquidacion" name="accioneslinkVacaciones" value="linkLiquidacion" disabled/>
+                                            Liquidaciones    
+                                        </div>
+                                            <div id="accioneslinkLiquidacion" class="form-group">
+                                            <div class='col-lg-3'></div>
+                                            <div class='col-lg-9'>
+                                                <input type="checkbox" id="modificarLiquidacion" value="modificarLiquidacion" name="accioneslinkLiquidacion" disabled/>
+                                                Modificar
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </div>
+
+                            <br>
+                            
+                            <input type="checkbox" class="custom-control-input" id="usuarios" name="permiso[]" value="usuarios"/>
+                            <a href="#accionesrrhh" data-toggle='collapse' data-target='#accionesusuarios'>Usuarios</a>
+
+                            <div id="accionesusuarios" class="collapse">
+                                <div class="form-group">
+                                    <div class='col-lg-1'></div>
+                                    <div class='col-lg-11'>
+                                        <input type="checkbox" id="agregarUsuario" value="agregarUsuario" name="accionesusuarios" disabled/>
+                                        Agregar
+                                        <input type="checkbox" id="modificarUsuario" value="modificarUsuario" name="accionesusuarios" disabled/>
+                                        Modificar
+                                        <input type="checkbox" id="auditoriaUsuario" value="auditoriaUsuario" name="accionesusuarios" disabled/>
+                                        Auditoria
+                                    </div>
+                                </div>                                
+                            </div>
+                        </div>
+
+                        <div class='col-lg-1'></div>
+                    </div>
+
+                
+                    
+                    <div class="modal-footer">
+                      <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+                      <button type="submit" class="btn btn-primary">Guardar</button>
+                    </div>
+                </form>
+            </div>
+          </div>
+        </div>
+
+        <!-- Modal Modificar Usuario -->
+
+
+
+        <!-- Librerias -->
+        <script src="../js/jquery/jquery-3.2.1.min.js" type="text/javascript"></script>
+        <script src="../js/bootstrap/js/bootstrap.min.js" type="text/javascript"></script>
+        <script src="../js/bootstrap/js/bootstrapValidator.min.js" type="text/javascript"></script>
+        <script src="../js/jquery/md5.js" type="text/javascript"></script>
+        <script src="../js/DataTables/datatables.min.js" type="text/javascript"></script>
+        <script src="../js/DataTables/datatables-select.min.js" type="text/javascript"></script>
+        <script src="../js/DataTables/dataTables.responsive.min.js" type="text/javascript"></script>
+        <script src="../js/funcionesSesion.js" type="text/javascript"></script>
+        <script src="../js/funcionesUsuarioPermisos.js" type="text/javascript"></script>
+        <script src="../js/funcionesUsuarios.js" type="text/javascript"></script>
+    </body>
+</html>

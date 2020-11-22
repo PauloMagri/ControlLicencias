@@ -1,0 +1,484 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>CEC - RRHH</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="shortcut icon" href="../img/icono.ico">
+        <link href="../js/bootstrap/css/bootstrap.min.css" rel="stylesheet" type="text/css"/>
+        <link href="../js/bootstrap/css/bootstrap-theme.min.css" rel="stylesheet" type="text/css"/>   
+        <link href="../js/bootstrap/css/bootstrapValidator.min.css" rel="stylesheet" type="text/css"/>
+        <link href="../js/DataTables/datatables.min.css" rel="stylesheet" type="text/css"/>
+        <link href="../js/DataTables/datatables-select.min.css" rel="stylesheet" type="text/css"/>
+        <link href="../js/DataTables/responsive.dataTables.min.css" rel="stylesheet" type="text/css"/>
+    </head>
+    <body>
+        <!-- Barra de Navegacion  -->
+        <nav class="navbar navbar-default" role="navigation">
+            <div class="container-fluid">
+                <div class="navbar-header">
+                    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+                        <span class="sr-only">Toggle navigation</span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button>
+                    
+                    <a class="navbar-brand" href="rrhh.html">
+                        <img src="../img/logo.png" width="30" height="30" class="d-inline-block align-top">
+                    </a>
+                </div>
+                <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                    <ul class="nav navbar-nav">
+                        <li class="nav-item">
+                            <a href="rrhh.html"><b>RRHH</b></a>
+                        </li>
+
+                        <li class="nav-item dropdown disabled">
+                            <a class="nav-link dropdown-toggle disabled" onclick="return false" href="#" id="linkVacaciones" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                              Vacaciones
+                              <span class="caret"></span>
+                            </a>
+                            <ul class="dropdown-menu" aria-labelledby="linkVacaciones">
+
+                              <li class="nav-item disabled">
+                                <a id="linkPedidoVacaciones" class="dropdown-item" href="pedidovacaciones.html" onclick="return false" >Pedido de vacaciones</a>
+                              </li>
+
+                              <li class="nav-item disabled">
+                                <a id="linkDiasCtaLicencia" class="dropdown-item" href="diasctalicencia.html" onclick="return false">D&iacute;as a cuenta de licencia</a>
+                              </li>
+
+                              <li class="nav-item">
+                                <a class="dropdown-item" href="#">Pendientes de autorizaci&oacute;n</a>
+                              </li>
+
+                              <li class="nav-item disabled">
+                                <a id="linkLicenciaVacaciones" class="dropdown-item" href="licenciavacaciones.html" onclick="return false">Licencias Anuales</a>
+                              </li>
+
+                              <li class="nav-item disabled">
+                                <a id="linkLiquidacion" class="dropdown-item" href="liquidacion.html" onclick="return false">Liquidaci&oacute;n</a>
+                              </li>
+
+                            </ul>
+                        </li>
+
+                        <li class="nav-item">
+                            <a href="empleadoslicencia.html">
+                              Personal de licencia
+                            </a>
+                        </li>
+
+                        <li class="nav-item disabled">
+                            <a id="linkLegajos" href="legajos.html" onclick="return false">Legajos</a>
+                        </li>
+
+                    </ul>
+
+                    <!-- Cerrar Sesion -->                           
+                    <form class="navbar-form navbar-right" action="../controlador/ruteador/CerrarSesion.php" method="POST">
+                        <button type="submit" class="btn btn-primary">Cerrar Sesion</button>
+                    </form>                   
+                </div>
+            </div>
+        </nav>
+        
+        <!-- Cuerpo -->
+        <div class="table-responsive no-wrap container">
+            <div class="row">
+                <div class="col-lg-1"></div>
+                <div class="col-lg-10">
+                    <!-- Titulo -->      
+                    <div class="page-header">
+                        <h1>Pedidos de vacaciones</h1>
+                    </div>
+                    <!-- Tabla -->
+                    <table class="table" id="tablaPedidoVacaciones" width="100%">
+                        <thead>
+                            <tr>
+                                <th data-priority="1">N°</th>
+                                <th data-priority="2">Fecha</th>
+                                <th data-priority="3">Legajo</th>
+                                <th data-priority="4">Apellido</th>
+                                <th data-priority="5">Nombre</th>
+                                <th data-priority="8">Ingreso</th>
+                                <th style="display:none">idlicenciavacaciones</th>
+                                <th data-priority="9">Dias de vacaciones</th>
+                                <th data-priority="10">Licencia</th>
+                                <th data-priority="6">Desde</th>
+                                <th data-priority="7">Hasta</th>
+                                <th data-priority="11">Cantidad de dias</th>
+                                <th data-priority="12">Pendientes</th>
+                            </tr>
+                        </thead>
+                        <tbody id="cuerpoTabla">
+                        </tbody>
+                    </table><br>
+                    <!-- Botones -->                    
+                    <table class="table">
+                        <tr>
+                            <td align="center">
+                                <button class="btn btn-primary btn-lg" id="agregarPedidoVacaciones" disabled="">Agregar</button>
+                            </td>
+                            <td align="center">
+                                <button class="btn btn-primary btn-lg" id="generarPedidoVacaciones" disabled>Generar Pedidos</button>
+                            </td>
+                            <td align="center">
+                                <button class="btn btn-primary btn-lg" id="modificarPedidoVacaciones" disabled>Modificar</button>
+                            </td>
+                            <td align="center">
+                                <button class="btn btn-primary btn-lg" id="autorizarPedidoVacaciones" disabled>Autorizar</button>
+                            </td>
+                            <td align="center">
+                                <button class="btn btn-primary btn-lg" id="eliminarPedidoVacaciones" disabled>Eliminar</button>
+                            </td>
+                            <td align="center">
+                                <button class="btn btn-primary btn-lg" id="imprimirPedidoVacaciones">Imprimir</button>
+                            </td>
+                            <td align="center">
+                                <button class="btn btn-primary btn-lg" id="AuditoriaPedidoVacaciones" disabled>Auditor&iacute;a</button>
+                            </td>
+                        </tr>
+                    </table>
+                    <!-- Formulario Imprimir -->
+                    <form id="imprimir" target="_blank" action="../controlador/reportes/ImprimirPedidoVacaciones.php" method="post">
+                        <!-- Tipo de formulario que se va imprimir de licencia o dias pendientes -->
+                        <input type="hidden" id="formulariopedidovacaciones" name="formulariopedidovacaciones"/>
+                        <!-- idpedidovacaciones -->
+                        <input type="hidden" id="idpv" name="idpv"/>
+                        <!-- fecha -->
+                        <input type="hidden" id="f" name="f"/>
+                        <!-- legajo -->
+                        <input type="hidden" id="leg" name="leg"/>
+                        <!-- apellido -->
+                        <input type="hidden" id="ap" name="ap"/>
+                        <!-- nombre -->
+                        <input type="hidden" id="nom" name="nom"/>
+                        <!-- ingreso -->
+                        <input type="hidden" id="ing" name="ing"/>
+                        <!-- dias de vacaciones correspondientes -->
+                        <input type="hidden" id="d" name="d"/>
+                        <!-- año -->
+                        <input type="hidden" id="a" name="a"/>
+                        <!-- desde -->
+                        <input type="hidden" id="des" name="des"/>
+                        <!-- hasta -->
+                        <input type="hidden" id="has" name="has"/>
+                        <!-- pendientes -->
+                        <input type="hidden" id="p" name="p"/>
+                        <!-- cantidad de dias -->
+                        <input type="hidden" id="cd" name="cd"/>
+                    </form>
+                </div>
+                <div class="col-lg-1"></div>
+            </div>
+        </div>
+
+        <!-- Modal Agregar Pedido Vacaciones -->
+        <div class="modal fade" id="modalAgregarPedidoVacaciones" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <form id="formAgregarPedidoVacaciones" class="form-horizontal"
+                          data-bv-message="Este valor No es válido"
+                          data-bv-feedbackicons-valid="glyphicon glyphicon-ok"
+                          data-bv-feedbackicons-invalid="glyphicon glyphicon-remove"
+                          data-bv-feedbackicons-validating="glyphicon glyphicon-refresh"
+                          data-bv-submitbuttons='button[type="submit"]'
+                          data-bv-trigger="focus blur"
+                          data-bv-live="enabled">
+                        <!-- Titulo Modal PedidoVacaciones -->
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                            <h4 class="modal-title" id="tituloModalPedidoVacaciones"><b>Nuevo pedido de vacaciones</b></h4>
+                        </div>
+                        <div class="modal-body">
+
+                            <!-- Fecha -->
+                            <div class="form-group">
+                               <label class='col-lg-2'>Fecha</label>
+                               <div class='col-lg-10'>
+                                   <input class="form-control" type="date" id="fechaapv" name="fecha" 
+                                    data-bv-date="true"
+                                    data-bv-date-format="DD/MM/YY"
+                                    data-bv-date-message="No es una fecha valida"/>
+                               </div>
+                            </div>
+
+                            <!-- Legajo -->
+                            <div class="form-group">
+                                <label class='col-lg-2'>Legajo</label>
+                                <div class='col-lg-10'>
+                                    <input class="form-control" type="text" id="legajoapv" name="legajo"
+                                           data-bv-message="El legajo no es válido"
+
+                                           data-bv-notempty="true"
+                                           data-bv-notempty-message="Debes completar el Legajo"
+
+                                           data-bv-regexp="true"
+                                           data-bv-regexp-regexp="[0-9]+"
+                                           data-bv-regexp-message="Solo números en este campo">
+                                </div>     
+                            </div>
+
+                            <!-- Apellido -->
+                            <div class="form-group">
+                                <label class='col-lg-2'>Apellido</label>
+                                <div class='col-lg-10'>
+                                    <input class="form-control" type="text" id="apellidoapv" disabled>
+                                </div>
+                            </div>
+
+                            <!-- Nombre -->
+                            <div class="form-group">
+                                <label class='col-lg-2'>Nombre</label>
+                                <div class='col-lg-10'>
+                                    <input class="form-control" type="text" id="nombreapv" disabled>
+                                </div>
+                            </div>
+                            
+                            <!-- Licencia -->
+                            <div class="form-group">
+                                <label class='col-lg-2'>Licencia</label>
+                                <div class='col-lg-10'>
+                                    <select class="form-control"  id="licencia" name="licencia">
+
+                                    </select>
+                                </div>
+                            </div>
+                            
+                        </div>
+                        <!-- Botones Modal -->
+                        <div class="modal-footer">
+                            <button type="submit" id="guardarPedidoVacaciones" class="btn btn-primary">Guardar</button>
+                            <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
+                            
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <!-- Modal Modificar Pedido Vacaciones -->
+        <div class="modal fade" id="modalModificarPedidoVacaciones" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <form id="formModificarPedidoVacaciones" class="form-horizontal"
+                          data-bv-message="Este valor No es válido"
+                          data-bv-feedbackicons-valid="glyphicon glyphicon-ok"
+                          data-bv-feedbackicons-invalid="glyphicon glyphicon-remove"
+                          data-bv-feedbackicons-validating="glyphicon glyphicon-refresh"
+                          data-bv-submitbuttons='button[type="submit"]'
+                          data-bv-trigger="focus blur"
+                          data-bv-live="enabled">
+                        <!-- Titulo Modal PedidoVacaciones -->
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                            <h4 class="modal-title" id="tituloModalPedidoVacaciones"><b>Modificar pedido de vacaciones</b></h4>
+                        </div>
+                        <div class="modal-body">
+
+                            <!-- Idpedidovacaciones -->
+                            <div class="form-group">
+                                <input class="form-control" type="hidden" id="idpedidovacaciones" name="idpedidovacaciones">
+                            </div>
+
+                            <!-- Fecha -->
+                            <div class="form-group">
+                               <label class='col-lg-2'>Fecha</label>
+                               <div class='col-lg-10'>
+                                   <input class="form-control" type="text" id="fecha" disabled>
+                               </div>
+                            </div>
+
+                            <!-- Legajo -->
+                            <div class="form-group">
+                                <label class='col-lg-2'>Legajo</label>
+                                <div class='col-lg-10'>
+                                    <input class="form-control" type="text" id="legajo" disabled>
+                                </div>     
+                            </div>
+
+                            <!-- Apellido -->
+                            <div class="form-group">
+                                <label class='col-lg-2'>Apellido</label>
+                                <div class='col-lg-10'>
+                                    <input class="form-control" type="text" id="apellido" disabled>
+                                </div>
+                            </div>
+
+                            <!-- Nombre -->
+                            <div class="form-group">
+                                <label class='col-lg-2'>Nombre</label>
+                                <div class='col-lg-10'>
+                                    <input class="form-control" type="text" id="nombre" disabled>
+                                </div>
+                            </div>
+                            
+                            <!-- Id Licencia Vacaciones -->
+                            <div class="form-group">
+                                <input class="form-control" type="hidden" id="idlicenciavacaciones" name="idlicenciavacaciones">
+                            </div>
+
+                            <!-- Licencia -->
+                            <div class="form-group">
+                                <label class='col-lg-2'>Licencia</label>
+                                <div class='col-lg-10'>
+                                    <input class="form-control" type="text" id="anio" disabled>
+                                </div>
+                            </div>
+
+                            <!-- Desde -->
+                            <div class="form-group">
+                               <label class='col-lg-2'>Desde</label>
+                               <div class='col-lg-10'>
+                                   <input class="form-control" type="date" id="desde" name="desde" placeholder="DD/MM/AA"
+                                    data-bv-date="true"
+                                    data-bv-date-format="DD/MM/YY"
+                                    data-bv-date-message="No es una fecha valida"/>
+                               </div>
+                            </div>
+
+                            <!-- Hasta -->
+                            <div class="form-group">
+                               <label class='col-lg-2'>Hasta</label>
+                               <div class='col-lg-10'>
+                                   <input class="form-control" type="date" id="hasta" name="hasta" placeholder="DD/MM/AA"
+                                    data-bv-date="true"
+                                    data-bv-date-format="DD/MM/YY"
+                                    data-bv-date-message="No es una fecha valida"/>
+                               </div>
+                            </div>
+
+                            <!-- Dias -->
+                            <div class="form-group">
+                               <label class='col-lg-2'>Cantidad de dias</label>
+                               <div class='col-lg-10'>
+                                   <input class="form-control" type="text" id="dias" name="dias"
+                                    data-bv-notempty="true"
+                                    data-bv-notempty-message="Debes completar el rango de fechas"
+                                    data-bv-regexp="true"
+                                    data-bv-regexp-regexp="[0-9]+"
+                                    data-bv-regexp-message="Solo números en este campo"
+                                    disabled/>
+                               </div>
+                            </div>
+                            
+                        </div>
+                        <!-- Botones Modal -->
+                        <div class="modal-footer">
+                            <button type="submit" id="cambiarPedidoVacaciones" class="btn btn-primary">Guardar</button>
+                            <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <!-- Modal Generar Pedido Vacaciones por delegacion -->
+        <div class="modal fade" id="modalGenerarPedidoVacaciones" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <form id="formGenerarPedidoVacaciones" class="form-horizontal"
+                          action="../controlador/reportes/ImprimirPVSeccion.php"
+                          method="post"
+                          target="_blank" 
+                          data-bv-message="Este valor No es válido"
+                          data-bv-feedbackicons-valid="glyphicon glyphicon-ok"
+                          data-bv-feedbackicons-invalid="glyphicon glyphicon-remove"
+                          data-bv-feedbackicons-validating="glyphicon glyphicon-refresh"
+                          data-bv-submitbuttons='button[type="submit"]'
+                          data-bv-trigger="focus blur"
+                          data-bv-live="enabled">
+                        <!-- Titulo Modal PedidoVacaciones -->
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                            <h4 class="modal-title" id="tituloModalGenerarPedidoVacaciones"><b>Generar Pedidos de Vacaciones</b></h4>
+                        </div>
+                        <div class="modal-body">
+
+                            <!-- Fecha -->
+                            <div class="form-group">
+                               <label class='col-lg-2'>Fecha</label>
+                               <div class='col-lg-10'>
+                                   <input class="form-control" type="date" id="fechagpv" name="fecha" placeholder="DD/MM/AA"
+                                    data-bv-date="true"
+                                    data-bv-date-format="DD/MM/YY"
+                                    data-bv-date-message="No es una fecha valida"/>
+                               </div>
+                            </div>
+
+                            <!-- Licencia -->
+                            <div class="form-group">
+                                <label class='col-lg-2'>Licencia</label>
+                                <div class='col-lg-10'>
+                                    <select class="form-control"  id="licenciagpv" name="licencia">
+
+                                    </select>
+                                </div>
+                            </div>
+
+                            <!-- Delegacion -->
+                            <div class="form-group">
+                                <label class='col-lg-2'>Seleccione una Secci&oacute;n</label>
+                                <div class='col-lg-10'>
+                                    <select class="form-control"  id="seccion" name="seccion">
+
+                                    </select>
+                                </div>
+                            </div>
+                            
+                        </div>
+                        <!-- Botones Modal -->
+                        <div class="modal-footer">
+                            <button type="submit" id="btngenerarPedidoVacaciones" class="btn btn-primary">Generar</button>
+                            <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <!-- Modal Auditoria Pedidos de Vacaciones -->
+        <div class="modal fade" id="modalAuditoriaPedidoVacaciones" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <!-- Titulo Modal AuditoriaPedidoVacaciones -->
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                            <h4 class="modal-title" id="tituloModalAuditoriaPedidoVacaciones"><b>Cambios efectuados en el registro seleccionado</b></h4>
+                        </div>
+                        <div class="modal-body">
+                            <!-- Tabla -->
+                            <table class="table" id="tablaAuditoria" width="100%">
+                                <thead>
+                                    <tr>
+                                        <th data-priority="1">Usuario</th>
+                                        <th data-priority="2">Acci&oacute;n</th>
+                                        <th data-priority="3">Fecha</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="cuerpoTablaAuditoria">
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
+                        </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Librerias -->
+        <script src="../js/jquery/jquery-3.2.1.min.js" type="text/javascript"></script>
+        <script src="../js/bootstrap/js/bootstrap.min.js" type="text/javascript"></script>
+        <script src="../js/bootstrap/js/bootstrapValidator.min.js" type="text/javascript"></script>
+        <script src="../js/DataTables/datatables.min.js" type="text/javascript"></script>
+        <script src="../js/DataTables/datatables-select.min.js" type="text/javascript"></script>
+        <script src="../js/DataTables/dataTables.responsive.min.js" type="text/javascript"></script>
+        <script src="../js/funcionesSesion.js" type="text/javascript"></script>
+        <script src="../js/funcionesUsuarioPermisos.js" type="text/javascript"></script>
+        <script src="../js/funcionesVacaciones.js" type="text/javascript"></script>
+        <script src="../js/funcionesPedidoVacaciones.js" type="text/javascript"></script>
+    </body>
+</html>

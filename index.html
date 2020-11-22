@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>CEC MENDOZA</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link href="js/bootstrap/css/bootstrap.min.css" rel="stylesheet" type="text/css"/>
+        <link href="js/bootstrap/css/bootstrap-theme.min.css" rel="stylesheet" type="text/css"/>
+        <link rel="shortcut icon" href="img/icono.ico">
+    
+    </head>
+
+    <body>
+
+        <br><br>
+
+        <div class="container">
+            <div class="row">
+                <div class="col-md-5"></div>
+                
+                <div class="col-md-2">
+                    <img src="img/logo.png" class="card-img-top" width="120" height="120" align="center">
+                </div>
+                
+                <div class="col-md-5"></div>
+            </div>
+
+            <br>
+
+            <div class="row">
+                <div class="col-md-4"></div>
+
+                <div class="col-md-2">
+                    <button type="button" class="btn btn-danger" id="btnrrhh" data-toggle="modal" data-target="#ModalLogIn">
+                        <img src="img/rrhh-icono.png" class="card-img-top" width="75" height="75">
+                        <p>Rrhh</p>
+                    </button>
+                </div>
+
+                <div class="col-md-2">
+                    <button type="button" class="btn btn-info" id="btnusuarios" data-toggle="modal" data-target="#ModalLogIn">
+                        <img src="img/usuarios-icono.png" class="card-img-top" width="75" height="75">
+                        <p>Usuarios</p>
+                    </button>
+                </div>
+
+                <div class="col-md-4"></div>
+            </div>
+         
+        </div>
+
+        <!-- Modal LogIn -->
+        <div class="modal fade" id="ModalLogIn" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                      <button type="button" class="close" data-dismiss="modal" aria-label="Close" aria-hidden="true">&times;
+                      </button>
+                      <h3 class="modal-title" id="tituloModalLogIn"><b>Iniciar sesion</b></h3>
+
+                    </div>
+                    <div class="modal-body">
+                        <!-- Formulario para Iniciar Sesion -->
+                        <form method="POST">
+                            <div class="form-group">
+                                <div class="input-group">
+                                        <span class="input-group-addon"><i class="glyphicon glyphicon-user"></i></span>
+                                        <input type="text" placeholder="Usuario" class="form-control" name="txtUsuario" id="txtUsuario">
+                                </div>
+                                
+                            </div> 
+                            <div class="form-group">
+                                <div class="input-group">
+                                        <span class="input-group-addon"><i class="glyphicon glyphicon-lock"></i></span>
+                                        <input type="password" placeholder="Clave" class="form-control" name="txtClave"  id="txtClave">
+                                    </div>
+                                
+                            </div>
+                        </form> <!-- Fin formulario Iniciar Sesion -->
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-success" id="enviar">Iniciar Sesion</button>
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+                    </div>
+                </div>
+            </div>
+        </div><!-- Fin Modal LogIn -->
+
+        <!-- Librerias -->
+        <script src="js/jquery/jquery-3.2.1.min.js" type="text/javascript"></script>
+        <script src="js/jquery/md5.js" type="text/javascript"></script>
+        <script src="js/bootstrap/js/bootstrap.min.js" type="text/javascript"></script>
+        <script src="js/funcionesLogIn.js" type="text/javascript"></script>
+    </body>
+</html>
